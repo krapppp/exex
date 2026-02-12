@@ -23,43 +23,22 @@
     frontend/
     │
     ├── src/
-    │   ├── app/                          # App Router (페이지 라우팅)
-    │   │   ├── layout.tsx                # 루트 레이아웃
-    │   │   ├── page.tsx                  # 랜딩 / 비로그인 대시보드
-    │   │   │
-    │   │   ├── (auth)/                   # 인증 영역
-    │   │   │   ├── login/page.tsx
-    │   │   │   └── signup/page.tsx
-    │   │   │
-    │   │   ├── dashboard/page.tsx        # 로그인 대시보드
-    │   │   │
-    │   │   ├── properties/               # 매물 영역
-    │   │   │   ├── page.tsx              # 매물 목록
-    │   │   │   ├── [id]/page.tsx         # 매물 상세
-    │   │   │   └── manage/               # 로그인 전용 관리
-    │   │   │       ├── move-in/page.tsx
-    │   │   │       ├── move-out/page.tsx
-    │   │   │       ├── compare/page.tsx
-    │   │   │       └── report/page.tsx
-    │   │   │
-    │   │   └── settings/
-    │   │       ├── page.tsx
-    │   │       └── edit/page.tsx
+    │   ├── app/                # App Router (페이지 구성)
+    │   │   ├── page.tsx        # 메인 페이지
+    │   │   └── layout.tsx      # 공통 레이아웃
     │   │
-    │   ├── components/                   # 공통 UI 컴포넌트
-    │   ├── features/                     # 도메인 단위 기능 모듈
-    │   ├── lib/                          # API 유틸
-    │   ├── hooks/                        # 커스텀 훅
-    │   ├── store/                        # 전역 상태
-    │   └── styles/                       # 전역 스타일
+    │   ├── components/         # 공통 컴포넌트 (추후 추가)
+    │   │
+    │   ├── lib/                # API 유틸, 헬퍼 함수
+    │   │
+    │   └── styles/             # 전역 스타일
     │
-    ├── public/
+    ├── public/                 # 정적 파일
     │
-    ├── .env.local                        # 로컬 환경 변수 (커밋 금지)
-    ├── .env.example                      # 환경 변수 예시 (커밋)
-    ├── middleware.ts                     # 로그인/권한 체크
+    ├── .env.local              # 로컬 환경 변수 (커밋 금지)
+    ├── .env.example            # 환경 변수 예시 (커밋)
     ├── package.json
-    ├── pnpm-lock.yaml
+    ├── pnpm-lock.yaml          # 의존성 고정 파일 (삭제 금지)
     ├── next.config.mjs
     └── README.md
 ▶️ 상세 예시는 **[front_ex.md](./front_ex.md)** 파일에 기재
