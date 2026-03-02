@@ -1,5 +1,6 @@
     frontend/
     │
+    |
     ├── src/
     │   ├── app/                # App Router (페이지 구성)
     │   │   ├── page.tsx        # 메인 페이지
