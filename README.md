@@ -1,182 +1,284 @@
-# AI 실내 공간 전후 변화 분석 시스템 - 프론트엔드
+# AI 실내 공간 전후 변화 분석 시스템 - Frontend
 
-전/후 이미지를 기반으로 분석 결과를 시각화하고, 사용자 인증 및 리포트를
-확인할 수 있는 웹 클라이언트입니다.\
-백엔드 API(FastAPI)와 통신하여 데이터를 표시합니다.
+전/후 이미지를 AI로 분석하여 변화를 감지하고 리포트를 생성하는 서비스의 프론트엔드 애플리케이션입니다.
 
-------------------------------------------------------------------------
+## README 유지 규칙 (AI/사람 공통)
 
-## 🚀 기술 스택
+> [DO NOT REMOVE] 아래 9개 섹션 제목은 뼈대로 유지하되 4, 5, 6번은 파트에 맞게 적용됨:
+> `기술스택`, `프로젝트 구조`, `설치 및 실행`, `주요 페이지 및 라우팅`, `상태 관리 및 API 연동`, `컴포넌트 구조 및 스타일링`, `개발 가이드`, `테스트`, `라이센스`
+>
+> [DO NOT REMOVE] 각 섹션의 `포함해야 함` / `포함하지 말 것` 블록은 삭제 금지.
+>
+> [DO NOT REMOVE] README에는 "현재 동작하는 사실"만 기록. 기획/논의/회의록/로드맵 상세는 `docs/` 또는 별도 문서로 분리.
 
--   **Framework**: Next.js (App Router)
--   **Language**: TypeScript
--   **Styling**: Tailwind CSS
--   **Package Manager**: pnpm
--   **Runtime**: Node.js 22.x
--   **State Management**: (추후 추가 예정)
--   **API Communication**: fetch (기본) / axios (선택)
+---
 
-------------------------------------------------------------------------
+## 1) 기술스택
 
-## 📁 프로젝트 구조
+```text
+[포함해야 함]
+- 실제 코드에서 사용하는 프레임워크/상태관리/스타일링 도구
+- 버전 고정이 있는 핵심 모듈 및 패키지 매니저
 
-    frontend/
-    │
-    ├── src/
-    │   ├── app/                # App Router (페이지 구성)
-    │   │   ├── page.tsx        # 메인 페이지
-    │   │   └── layout.tsx      # 공통 레이아웃
-    │   │
-    │   ├── components/         # 공통 컴포넌트 (추후 추가)
-    │   │
-    │   ├── lib/                # API 유틸, 헬퍼 함수
-    │   │
-    │   └── styles/             # 전역 스타일
-    │
-    ├── public/                 # 정적 파일
-    │
-    ├── .env.local              # 로컬 환경 변수 (커밋 금지)
-    ├── .env.example            # 환경 변수 예시 (커밋)
-    ├── package.json
-    ├── pnpm-lock.yaml          # 의존성 고정 파일 (삭제 금지)
-    ├── next.config.mjs
-    └── README.md
-▶️ 상세 예시는 **[front_ex.md](./front_ex.md)** 파일에 기재
+[포함하지 말 것]
+- 기술 선택 배경의 장문 설명
+- 미확정 기술/검토 중 기술
 
-------------------------------------------------------------------------
-
-## 🔧 설치 및 실행
-
-### 1️⃣ 런타임 설치 (최초 1회)
-
-프로젝트 루트(HCT)에서:
-
-    mise install
-
-확인:
-
-    node -v
-    pnpm -v
-
-### 2️⃣ 의존성 설치
-
-    cd frontend
-    pnpm install
-
-### 3️⃣ 환경 변수 설정
-
-    cp .env.example .env.local
-
-`.env.local` 내용:
-
-    NEXT_PUBLIC_API_URL="http://localhost:8000/api/v1"
-
-⚠ `.env.local`은 커밋하지 않습니다.
-
-### 4️⃣ 개발 서버 실행
-
-    pnpm dev
-
-브라우저 접속:
-
-    http://localhost:3000
-
-------------------------------------------------------------------------
-
-## 🔗 백엔드 연결
-
--   **Backend**: http://localhost:8000\
--   **API Base URL**: http://localhost:8000/api/v1
-
-백엔드에서 반드시 CORS 설정 필요:
-
-    allow_origins=["http://localhost:3000"]
-
-------------------------------------------------------------------------
-
-## 📦 주요 스크립트
-
-    pnpm dev        # 개발 서버 실행
-    pnpm build      # 프로덕션 빌드
-    pnpm start      # 빌드된 서버 실행
-    pnpm lint       # ESLint 실행
-
-------------------------------------------------------------------------
-
-## 🔐 인증 흐름
-
-1.  로그인/회원가입 요청 → 백엔드에서 JWT 발급\
-2.  프론트엔드에서 access_token 저장\
-3.  API 요청 시 헤더 포함
-
-```{=html}
-<!-- -->
-```
-    Authorization: Bearer {access_token}
-
-토큰 저장 방식은 추후 결정 (localStorage / cookie 등)
-
-------------------------------------------------------------------------
-
-## 🛠 개발 가이드
-
-### 새로운 페이지 추가
-
-    src/app/경로/page.tsx
-
-App Router 기반 구조 사용
-
-### API 호출 추가 (예시)
-
-``` ts
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
-export async function fetchUser() {
-  const res = await fetch(`${BASE_URL}/me`);
-  return res.json();
-}
+[업데이트 트리거]
+- `package.json`, `pnpm-lock.yaml` 변경 시
+- 핵심 UI 프레임워크나 상태 관리 라이브러리 교체 시
 ```
 
-### 컴포넌트 추가
+### 현재 사용
+- Node.js 24
+- Next.js (App Router)
+- React & TypeScript
+- 패키지 매니저: `pnpm`
+- 스타일링: TailwindCSS / Vanilla CSS
+- 포매터 및 린터: ESLint, Prettier
 
-    src/components/ComponentName.tsx
+---
 
-------------------------------------------------------------------------
+## 2) 프로젝트 구조
 
-## 🧪 로컬 개발 전체 실행 순서
+```text
+[포함해야 함]
+- 디렉토리 단위의 역할
+- 신규 기여자가 진입할 때 반드시 알아야 할 핵심 파일 및 구조
 
-1️⃣ 백엔드 실행
+[포함하지 말 것]
+- 파일 전체 나열
+- 개별 컴포넌트 단위 설명
 
-    uv run uvicorn app.main:app --reload --port 8000
+[업데이트 트리거]
+- `app/`, `components/`, `public/` 등 최상위 구조가 바뀔 때
+- 전역 레이아웃 및 환경 설정 파일이 크게 변경될 때
+```
 
-2️⃣ 프론트엔드 실행
+```text
+frontend/
+├── app/               # Next.js App Router (페이지 및 레이아웃)
+│   ├── globals.css    # 전역 스타일
+│   ├── layout.tsx     # 최상위 레이아웃
+│   └── page.tsx       # 메인 진입점
+├── components/        # 백엔드 도메인 및 역할 단위로 분리된 컴포넌트
+├── public/            # 정적 에셋 (이미지, 아이콘 등)
+├── types/             # TS 인터페이스 및 타입 정의 (예정)
+├── lib/               # 공통 유틸리티 및 API 클라이언트 (예정)
+├── .env.local         # 로컬 환경 변수
+├── next.config.ts     # Next.js 설정
+├── package.json       # 의존성 기준 파일
+├── pnpm-lock.yaml     # 잠금 파일
+└── README.md
+```
 
-    pnpm dev
+---
 
-3️⃣ 접속
+## 3) 설치 및 실행
 
--   Frontend: http://localhost:3000\
--   Backend Docs: http://localhost:8000/api/docs
+```text
+[포함해야 함]
+- 신규 개발자가 로컬 실행 가능한 최소 절차
+- 필수 환경변수 이름
+- 실제 문서 URL/실행 명령
 
-------------------------------------------------------------------------
+[포함하지 말 것]
+- 대안 워크플로우의 장문 비교
+- 운영 배포 전략 상세(별도 배포 문서로 이동)
 
-## 📦 배포 (예정)
+[업데이트 트리거]
+- `.env.example`, `next.config.ts` 변경 시
+- 실행 명령(`pnpm dev` 등) 변경 시
+```
 
--   Vercel 배포 예정
--   환경 변수는 Vercel Dashboard에서 설정
--   `NEXT_PUBLIC_API_URL`을 배포 서버 주소로 변경
+### 1. 의존성 설치
 
-------------------------------------------------------------------------
+`frontend/` 디렉토리에서 실행:
 
-## 🧪 팀원 온보딩 가이드
+```bash
+pnpm install
+```
 
-    git clone <repo>
-    cd HCT/frontend
-    mise install
-    pnpm install
-    cp .env.example .env.local
-    pnpm dev
+### 2. 환경 변수 설정
 
-접속:
+```bash
+cp .env.example .env.local
+```
 
-    http://localhost:3000
+`.env.local` 예시:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+### 3. 클라이언트 실행
+
+```bash
+pnpm dev
+```
+
+- 로컬 접속: `http://localhost:3000`
+
+---
+
+## 4) 주요 페이지 및 라우팅
+
+```text
+[포함해야 함]
+- 현재 구현된 주요 페이지 경로(Route)와 화면의 역할
+- 동적 라우팅 경로 (예: `[id]`) 구조
+
+[포함하지 말 것]
+- 구현되지 않은 페이지의 확정 스펙처럼 보이는 예시
+- 개별 페이지 내의 모든 버튼/링크 설명
+
+[업데이트 트리거]
+- `app/` 하위에 새로운 페이지(page.tsx)가 추가/삭제될 때
+- 기존 페이지의 접근 권한(로그인 필요 여부)이 변경될 때
+```
+
+현재 프론트엔드 라우팅은 백엔드 도메인 구조와 밀접하게 연동될 수 있도록 구성되어 있습니다.
+
+| 경로 | 역할 | 연동 예상 백엔드 API | 인증 필요 |
+|---|---|---|---|
+| `/` | 메인 랜딩 페이지 | - | No |
+| `/login`, `/signup` | 로그인 및 회원가입 | `auth`, `user` | No |
+| `/dashboard` | 메인 대시보드 (요약 통계) | 복합 | Yes |
+| `/properties`, `/properties/manage` | 내 프로젝트/부동산 목록 및 관리 | `project` | Yes |
+| `/registration/move-in`, `/registration/move-out` | 전/후 사진 업로드 및 등록 | `image` | Yes |
+| `/analysis` | AI 전후 변화 분석 결과 및 진행 상태 확인 | `analysis` | Yes |
+| `/reports` | 최종 리포트 조회 및 다운로드 | `report` | Yes |
+| `/profile`, `/settings` | 내 프로필 및 설정 | `user` | Yes |
+
+---
+
+## 5) 상태 관리 및 API 연동
+
+```text
+[포함해야 함]
+- 전역 상태 관리 도구 및 기준
+- 백엔드 API와의 통신 방식 (Fetch, Axios 등)
+- 인증 토큰 처리 방식 (저장 위치, 헤더 주입 등)
+
+[포함하지 말 것]
+- API 요청/응답의 개별 JSON 상세 페이로드
+- 전역 상태의 모든 변수 나열
+
+[업데이트 트리거]
+- API 클라이언트 래퍼(인터셉터 등) 구조 변경 시
+- 상태 관리 라이브러리(Zustand, Context API 등) 추가/교체 시
+- 인증 토큰 저장 방식(Cookie -> LocalStorage 등) 변경 시
+```
+
+- **API 클라이언트**: `Axios` 활용 예정 (통일된 `baseURL` 및 인터셉터 설정 적용)
+- **인증 방식**: JWT (JSON Web Token) 기반 Bearer 인증
+- **토큰 처리**: 사용자 로그인 시 로컬 스토리지(Local Storage)에 토큰을 저장하고, Axios 인터셉터를 통해 모든 API 요청 헤더에 `Authorization: Bearer <token>`을 자동 주입하여 서버와 통신합니다.
+- **상태 관리**: 컴포넌트 내부 상태는 React의 `useState`, `useEffect`를 기본으로 활용합니다. 추후 전역 상태 및 비동기 서버 상태 관리를 위해 필요 시 상태 관리 도구 도입을 검토합니다.
+- **데이터 모델(계약)**: 백엔드의 DB 스키마(PostgreSQL) 및 API 응답 모델(Pydantic)과 1:1로 대응되는 TypeScript 인터페이스를 `types/` 폴더 내에 정의하여 데이터 안정성을 보장합니다.
+
+---
+
+## 6) 컴포넌트 구조 및 스타일링
+
+```text
+[포함해야 함]
+- 공통 컴포넌트 디렉토리 및 분리 기준
+- 프로젝트 공통으로 적용되는 스타일링 방식
+
+[포함하지 말 것]
+- 개별 컴포넌트의 모든 Props 나열
+- 특정 페이지에만 쓰이는 1회성 CSS 클래스 상세
+
+[업데이트 트리거]
+- UI 라이브러리(Radix UI, Shadcn 등) 신규 도입 시
+- `tailwind.config.ts` 및 글로벌 스타일 구조 변경 시
+```
+
+### 컴포넌트 설계 (도메인/페이지별 그룹화)
+백엔드 API 엔드포인트 명칭 및 화면 역할에 맞춰 `components/` 하위 폴더를 1:1로 매칭하여 관리합니다. 이를 통해 응집도를 높이고 코드 탐색을 용이하게 합니다.
+
+- **비즈니스 도메인 컴포넌트**: `analysis/`, `auth/`, `project/`, `report/`, `user/` (특정 API 로직과 강하게 결합된 UI)
+- **페이지/레이아웃 컴포넌트**: `dashboard/`, `landing/`, `layout/` (전체 틀을 구성하거나 특정 화면에 종속된 컴포넌트)
+- **공통 컴포넌트**:
+  - `shared/`: 이미지 업로드 존, 로딩 상태 등 여러 도메인에서 교차로 사용되는 복잡한 공통 컴포넌트
+  - `ui/`: 단순 디자인 시스템 컴포넌트 (버튼, 인풋 등)
+
+### 스타일링 가이드
+- 전역 설정: `app/globals.css`
+- 프레임워크: TailwindCSS 기반 유틸리티 클래스 적극 활용
+- 규칙: 인라인 스타일 지양, 반응형 디자인(Mobile-first) 고려
+
+---
+
+## 7) 개발 가이드
+
+```text
+[포함해야 함]
+- 이 레포의 코드 변경 표준 절차
+- 최소한의 일관성 규칙(컴포넌트 네이밍, 폴더 구조 컨벤션)
+
+[포함하지 말 것]
+- 개인 선호 코딩 스타일
+- 회의/의사결정 히스토리
+
+[업데이트 트리거]
+- 컴포넌트/페이지 생성 규칙 변경 시
+- Lint, Prettier 규칙이 크게 변경될 때
+```
+
+### 프론트엔드 작업 순서
+
+1. DB 구조에 맞춰 `types/` 에 TypeScript 인터페이스 정의
+2. 백엔드 주소에 맞게 `api/` 디렉토리에 통신 함수 작성
+3. `components/` 하위의 알맞은 도메인 폴더에 UI 컴포넌트 작성
+4. `app/` 라우트에 페이지를 배치하고 컴포넌트와 API 연동
+
+### 린트 및 포매팅
+
+```bash
+pnpm lint
+```
+
+---
+
+## 8) 테스트
+
+```text
+[포함해야 함]
+- 프론트엔드 실행 전제조건
+- 테스트 명령 및 툴셋
+- 현재 커버 범위
+
+[포함하지 말 것]
+- 테스트 계획서 수준의 장문
+- 실제로 없는 테스트 프레임워크 사용법
+
+[업데이트 트리거]
+- Jest, Cypress, Playwright 등 신규 도구 도입 시
+- 테스트 실행 명령어 변경 시
+```
+
+### 현재 제공 테스트
+
+- 현재 구축된 자동화 테스트 스위트는 없음. (개발 필요)
+- 브라우저를 통한 수동 UI 및 API 연동 테스트 권장
+
+---
+
+## 9) 라이센스
+
+```text
+[포함해야 함]
+- 라이센스 종류
+- 라이센스 파일 위치(있을 경우)
+
+[포함하지 말 것]
+- 법률 해석
+- 내부 정책 문구
+
+[업데이트 트리거]
+- LICENSE 파일 생성/변경 시
+- 라이선스 정책 변경 시
+```
+
+MIT License
